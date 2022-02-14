@@ -1,0 +1,614 @@
+{
+	"info": {
+		"_postman_id": "b75b21e5-8012-4db9-b35e-027c39b8354c",
+		"name": "Loan-App",
+		"description": "Loan App - Credit Lending App\n\n2 Types of User can access the system - User / Admin\n\n*   User can apply for Loan by registering & applying for Loan\n*   Admin will check all Loan Applications & will Approve / Reject wrt Credit Score etc\n*   User has to Pay EWI (Every Week Installment) wrt Approved Amount & Repayment Period\n*   User can apply to loan once at a time.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "auth",
+					"item": [
+						{
+							"name": "User Registration",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"userX\",\r\n    \"email\": \"userX@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"password_confirmation\": \"12345678\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"register"
+									]
+								},
+								"description": "User has to register themselves before applying for Loan\n\n[http://localhost:8000/api/register](http://localhost:8000/api/register)"
+							},
+							"response": []
+						},
+						{
+							"name": "User Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"admin@gmail.com\",\r\n    \"password\":\"12345678\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": "After successful Authentication User is allowed to apply for Loan\n\n[http://localhost:8000/api/login](http://localhost:8000/api/login)"
+							},
+							"response": []
+						},
+						{
+							"name": "User Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MjcwNjUsImV4cCI6MTY0NDgzMDY2NSwibmJmIjoxNjQ0ODI3MDY1LCJqdGkiOiJjUnF4QUYyOXhwbENKMUowIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UmXfCihyNZhEreaRu1mRzW5zJdOweDXWwe6WaPiQoOw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/auth/user-profile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"user-profile"
+									]
+								},
+								"description": "User can view their Profile details\n\n[http://localhost:8000/api/v1/user-profile](http://localhost:8000/api/v1/user-profile)"
+							},
+							"response": []
+						},
+						{
+							"name": "User Refresh Token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MjU0MDQsImV4cCI6MTY0NDgyOTAwNCwibmJmIjoxNjQ0ODI1NDA0LCJqdGkiOiIxRlpiRFl0bVRIaW40Z0NtIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.D6Bbz77IbViHMAMt6kFHUJelaLib4J_-sPP3RObU5nw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/auth/refresh",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"refresh"
+									]
+								},
+								"description": "Token provided on Login is valid for 1 Hr. To get new Token Refresh Token can be used.\n\n[http://localhost:8000/api/v1/refresh](http://localhost:8000/api/v1/refresh)"
+							},
+							"response": []
+						},
+						{
+							"name": "User Logout",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MjUxNjQsImV4cCI6MTY0NDgyODc2NCwibmJmIjoxNjQ0ODI1MTY0LCJqdGkiOiJ5Z1JHMFQzb3lRNHlBMU9SIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.iyQI1iDZVC6D4Iiw8Cjoa-l56_BgPs5od4HFy4mDmJA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/auth/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"logout"
+									]
+								},
+								"description": "User can Logout after applying for Loan\n\n[http://localhost:8000/api/v1/logout](http://localhost:8000/api/v1/logout)"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "loan_applications",
+					"item": [
+						{
+							"name": "Create Loan Application",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MzE4OTUsImV4cCI6MTY0NDgzNTQ5NSwibmJmIjoxNjQ0ODMxODk1LCJqdGkiOiJKZndhY0gwR2FtYmpPbm8wIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.fjFoEIKwMy3KIyLJVo49cszMci1LjWJwdIvnEPJcmxk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 100,\r\n    \"description\": \"Test\",\r\n    \"repayment_period\": 4,\r\n    \"interest_percentage\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loan_applications",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loan_applications"
+									]
+								},
+								"description": "User has to apply for Loan by providing necessary details like Amount, Repayment Period (IN WEEKS) etc\n\n[http://localhost:8000/api/v1/loan_applications](http://localhost:8000/api/v1/loan_applications)"
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Loan Applications",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4Mjg4OTgsImV4cCI6MTY0NDgzMjQ5OCwibmJmIjoxNjQ0ODI4ODk4LCJqdGkiOiJ2Z20zZmh1RzNIcDFJQjJuIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.DgodD6hK7leewqHowwuArBH4CkSQM97_GvXw9RdLCEQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loan_applications",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loan_applications"
+									]
+								},
+								"description": "User can view their all Loan Applications\n\n[http://localhost:8000/api/v1/loan_applications](http://localhost:8000/api/v1/loan_applications)"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Loan Application Details By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ3MzYxNjcsImV4cCI6MTY0NDczOTc2NywibmJmIjoxNjQ0NzM2MTY3LCJqdGkiOiJuWDBpYno5MHJham45ZFUxIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.vxPIh9oqH8a-hXBdac8WHFxtLdExfA4RZfnPkY1GZ-A",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loan_applications/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loan_applications",
+										"1"
+									]
+								},
+								"description": "User can view Loan Application details.\n\n[http://localhost:8000/api/v1/loan_applications/1](http://localhost:8000/api/v1/loan_applications/1)"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Loan Application By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4Mjg4OTgsImV4cCI6MTY0NDgzMjQ5OCwibmJmIjoxNjQ0ODI4ODk4LCJqdGkiOiJ2Z20zZmh1RzNIcDFJQjJuIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.DgodD6hK7leewqHowwuArBH4CkSQM97_GvXw9RdLCEQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 200,\r\n    \"description\": \"Added 100 Amount\",\r\n    \"repayment_period\": 4,\r\n    \"interest_percentage\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loan_applications/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loan_applications",
+										"1"
+									]
+								},
+								"description": "User can only Update Loan Application when in Loan Application is in SUBMITTED State\n\n[http://localhost:8000/api/v1/loan_applications/1](http://localhost:8000/api/v1/loan_applications/1)"
+							},
+							"response": []
+						},
+						{
+							"name": "Approve/Reject Loan Application",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MzE5MjQsImV4cCI6MTY0NDgzNTUyNCwibmJmIjoxNjQ0ODMxOTI0LCJqdGkiOiJqUVVQRE5mYmoyUTJJWUZVIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.jtnH0PIOOVX5E7pl2PvyVPsniYNDQQNvoKU0_G91GNI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount_approved\": 100,\r\n    \"repayment_period_approved\": 5,\r\n    \"principal_amount\": 100,\r\n    \"interest_percentage\": 10,\r\n    \"interest_amount\": 10,\r\n    \"loan_application_status\": \"APPROVED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loan_applications/1/approve-reject",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loan_applications",
+										"1",
+										"approve-reject"
+									]
+								},
+								"description": "Admin can Approve / Reject Loan Application after thorough check of Credit Score etc for User\n\n[http://localhost:8000/api/v1/loan_applications/1/approve-reject](http://localhost:8000/api/v1/loan_applications/1/approve-reject)"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "loans",
+					"item": [
+						{
+							"name": "Get All Loans",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MzE2MjAsImV4cCI6MTY0NDgzNTIyMCwibmJmIjoxNjQ0ODMxNjIwLCJqdGkiOiJWdlNpaXFnZ2o1RE16NkVEIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.sFXDe-MEhWIufe7Vih2AeH_D9aS57Nx1XFme5-SvoaU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loans",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loans"
+									]
+								},
+								"description": "Admin can view All Loans.\n\n[http://localhost:8000/api/v1/loans](http://localhost:8000/api/v1/loans)"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Loan",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ3Mzc5MDMsImV4cCI6MTY0NDc0MTUwMywibmJmIjoxNjQ0NzM3OTAzLCJqdGkiOiJMWWY4bXMzc1F0ZTIxMHZIIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.RsZ61qnaZHImZq4uUvaT8eISo_4nF8P3J6mjPylcSdk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"loan_application_id\": 1,\r\n    \"amount_asked\": 200,\r\n    \"repayment_period_asked\": 1,\r\n    \"amount_approved\": 100,\r\n    \"repayment_period_approved\": 5,\r\n    \"principal_amount\": 100,\r\n    \"interest_percentage\": 10,\r\n    \"interest_amount\": 10,\r\n    \"loan_status\": \"ACTIVE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loans",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loans"
+									]
+								},
+								"description": "Deperecated\n\n[http://localhost:8000/api/v1/loans](http://localhost:8000/api/v1/loans)"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Loan By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MzE2MjAsImV4cCI6MTY0NDgzNTIyMCwibmJmIjoxNjQ0ODMxNjIwLCJqdGkiOiJWdlNpaXFnZ2o1RE16NkVEIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.sFXDe-MEhWIufe7Vih2AeH_D9aS57Nx1XFme5-SvoaU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loans/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loans",
+										"1"
+									]
+								},
+								"description": "Admin can view Loan by ID\n\n[http://localhost:8000/api/v1/loans/1](http://localhost:8000/api/v1/loans/1)"
+							},
+							"response": []
+						},
+						{
+							"name": "Update Loan By ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MzE5MjQsImV4cCI6MTY0NDgzNTUyNCwibmJmIjoxNjQ0ODMxOTI0LCJqdGkiOiJqUVVQRE5mYmoyUTJJWUZVIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.jtnH0PIOOVX5E7pl2PvyVPsniYNDQQNvoKU0_G91GNI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount_approved\": 100,\r\n    \"repayment_period_approved\": 2,\r\n    \"principal_amount\": 100,\r\n    \"interest_percentage\": 10,\r\n    \"interest_amount\": 10,\r\n    \"loan_status\": \"ACTIVE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/loans/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"loans",
+										"1"
+									]
+								},
+								"description": "Admin can update loan by id\n\n[http://localhost:8000/api/v1/loans/1](http://localhost:8000/api/v1/loans/1)"
+							},
+							"response": []
+						},
+						{
+							"name": "Pay EWI",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2NDQ4MjcwNjUsImV4cCI6MTY0NDgzMDY2NSwibmJmIjoxNjQ0ODI3MDY1LCJqdGkiOiJjUnF4QUYyOXhwbENKMUowIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.UmXfCihyNZhEreaRu1mRzW5zJdOweDXWwe6WaPiQoOw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"loan_no\": \"6209d775b5919\",\r\n    \"amount_paid\": 22\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/ewi/pay",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"ewi",
+										"pay"
+									]
+								},
+								"description": "User can Pay EWI (Every Week Installment) wrt Loan no.\n\n[http://localhost:8000/api/v1/ewi/pay](http://localhost:8000/api/v1/ewi/pay)"
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Version 1 - API"
+		}
+	]
+}
