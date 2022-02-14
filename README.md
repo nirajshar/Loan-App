@@ -8,30 +8,28 @@ When all EWI (Every Week Installments) are paid by user, Loan will be set to clo
 ## Modules
 
 - **[User](#)**
-    There are 2 Types of User Type / Agents accessing the application User / Admin.
-    User can be registered from register API.
-    Admin is auto generated via DB:SEED.    
+    - There are 2 Types of User accessing the application User / Admin.
+    - User can be registered from register API.
+    - Admin is auto generated via DB:SEED.    
 
     - Constraints 
-        User can only apply/update Loan via Loan Application API.
-        User can only apply for Loan one at a time. Multiple applications at a time are restricted.
-        User can update their Loan Application when in SUBMITTED stage.
-
-        Admin can only approve/reject Loan via Loan Application API.
+        - User can only apply/update Loan via Loan Application API.
+        - User can only apply for Loan one at a time. Multiple applications at a time are restricted.
+        - User can update their Loan Application when in SUBMITTED stage.
+        - Admin can only approve/reject Loan via Loan Application API.
 
 - **[Loan Application](#)**
-    Loan Application is used by User for Tendering for the Loan.
+    - Loan Application is used by User for Tendering for the Loan.
 
 - **[Loan](#)**
-    Loan Application if approved then Loan is created for the Loan Application.
+    - Loan Application if approved then Loan is created for the Loan Application.
 
 - **[Loan Amortization](#)**
-    Loan Application if approved then Loan Amortizations is created for the Approved Loan.
-    Loan are paid through EWI (Every Week Installments) via Loan Amortization API.
+    - Loan Application if approved then Loan Amortizations is created for the Approved Loan.
+    - Loan are paid through EWI (Every Week Installments) via Loan Amortization API.
 
 ## Installation
 
-Install required packages.
 
 ```ps
 composer install
