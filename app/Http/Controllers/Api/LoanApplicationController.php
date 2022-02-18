@@ -4,16 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Validator;
-use DB;
-use Carbon\Carbon;
-use App\Models\LoanApplication;
-use App\Models\Loan;
-use App\Services\LoanService;
-use App\Services\LoanAmortizationService;
 use App\Services\LoanApplicationService;
-use App\Http\Resources\LoanApplicationResource;
-
 
 class LoanApplicationController extends Controller
 {
