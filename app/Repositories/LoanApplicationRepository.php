@@ -35,12 +35,12 @@ class LoanApplicationRepository
         $user = auth()->user();
 
         if ( $user->role === 'admin' ) {
-            $data = $this->loan_application->latest()->get();
+            $loanApplicationExists = $this->loan_application->latest()->get();
         } else {
-            $data = $this->loan_application->where('user_id', $user->id)->latest()->get();
+            $loanApplicationExists = $this->loan_application->where('user_id', $user->id)->latest()->get();
         }
 
-        if ( $data->isEmpty() ) {
+        if ( $loanApplicationExists->isEmpty() ) {
             return [
                 'status' => 404,
                 'message' => 'Loan Applications not found',
@@ -51,7 +51,7 @@ class LoanApplicationRepository
         return [
             'status' => 200,
             'message' => 'Loan Applications found',
-            'data' =>  LoanApplicationResource::collection($data),
+            'data' =>  LoanApplicationResource::collection($loanApplicationExists),
         ];
 
     }
