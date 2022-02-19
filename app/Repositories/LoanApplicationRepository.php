@@ -8,7 +8,6 @@ use App\Models\Loan;
 
 # SERVICES
 use App\Services\LoanService;
-use App\Services\LoanAmortizationService;
 
 # RESOURCE
 use App\Http\Resources\LoanApplicationResource;
@@ -22,12 +21,13 @@ class LoanApplicationRepository
 {
 
     protected $loan_application;
-    protected $loan;
+    protected $loanService;
+        protected $loanAmortizationService;
 
-    public function __construct(LoanApplication $loan_application, Loan $loan)
+    public function __construct(LoanApplication $loan_application, LoanService $loanService)
     {
         $this->loan_application = $loan_application;
-        $this->loan = $loan;
+        $this->loanService = $loanService;
     }
 
     public function getAll()
@@ -89,7 +89,7 @@ class LoanApplicationRepository
 
         try {
              
-            $new_loan_application = LoanApplication::create([
+            $new_loan_application = $this->loan_application->create([
                 'user_id' => $user->id,
                 'amount' => $validator->safe()->amount,
                 'description' => $validator->safe()->description,
@@ -219,9 +219,9 @@ class LoanApplicationRepository
             ];
         }
 
-        $loanExistsForApplication = $this->loan->find($loanApplicationExists->id);
+        $loanExistsForApplication = $this->loanService->getLoanForLoanApplicationID($loanApplicationExists->id);
 
-        if ( ! is_null( $loanExistsForApplication ) ) {
+        if ( isset( $loanExistsForApplication['data']['id'] ) && $loanExistsForApplication['data']['id'] !== '' ) {
             return [
                 'status' => 409,
                 'message' => 'Loan already exists for Application',
@@ -238,11 +238,11 @@ class LoanApplicationRepository
 
                 DB::beginTransaction();
                 
-                $new_loan = LoanService::createLoan($validator->safe(), $loanApplicationExists);
+                $new_loan = $this->loanService->createOne($validator->safe(), $loanApplicationExists);
 
-                if ( $new_loan['status'] === 200 ) {
-                    $loanAmortization = LoanAmortizationService::createLoanAmortization($validator->safe(), $new_loan['data']['id']);
-                }
+                // if ( $new_loan['status'] === 200 ) {
+                //     $loanAmortization = $this->loanAmortizationService->createLoanAmortization($validator->safe(), $new_loan['data']['id']);
+                // }
 
                 DB::commit();               
 

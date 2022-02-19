@@ -3,11 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\LoanApplicationRepository;
-use Exception;
-use DB;
-use Log;
-use Validator;
-use App\Models\Loan;
 
 class LoanApplicationService 
 {
@@ -24,9 +19,9 @@ class LoanApplicationService
         return $this->loanApplicationRepository->getAll();       
     }
 
-    public function createOne($data, $user)
+    public function createOne($request, $user)
     {
-        return $this->loanApplicationRepository->createOne($data, $user);
+        return $this->loanApplicationRepository->createOne($request, $user);
     }
 
     public function showOne($id)
@@ -34,9 +29,9 @@ class LoanApplicationService
         return $this->loanApplicationRepository->showOne($id);
     }
 
-    public function updateOne($data, $id, $user)
+    public function updateOne($request, $id, $user)
     {
-        return $this->loanApplicationRepository->updateOne($data, $id, $user);
+        return $this->loanApplicationRepository->updateOne($request, $id, $user);
     }
 
     public function approveOrRejectLoanApplication($request, $id, $user)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Services\LoanApplicationService;
 
 class LoanApplicationController extends Controller
@@ -129,7 +130,7 @@ class LoanApplicationController extends Controller
         } catch (Exception $e) {
             $response = [
                 'status' => 500,
-                'message' => 'Something went wrong',
+                'message' => 'Something went wrong'.$e,
                 'error' => 'INTERNAL SERVER ERROR'
             ];
         }

@@ -2,60 +2,32 @@
 
 namespace App\Services;
 
-use App\Transaction;
-use Carbon\Carbon;
-use App\Models\LoanAmortization;
-use App\Http\Resources\LoanAmortizationResource;
+use App\Repositories\LoanAmortizationRepository;
 
-class LoanAmortizationService {
+class LoanAmortizationService 
+{
 
-    public function createLoanAmortization( $loanAmortizationData, $loan_id )
+    protected $loanAmortizationRepository;
+
+
+    public function __construct(LoanAmortizationRepository $loanAmortizationRepository)
     {
-
-        try {           
-
-            for ($i = 1; $i <= $loanAmortizationData->repayment_period_approved; $i++) {
-
-                $loan = LoanAmortization::create([
-                    'loan_id' => $loan_id,
-                    'amount_to_pay' => ($loanAmortizationData->amount_approved + $loanAmortizationData->interest_amount) / $loanAmortizationData->repayment_period_approved,
-                    'interest_amount_to_pay' => $loanAmortizationData->interest_amount / $loanAmortizationData->repayment_period_approved,
-                    'principal_amount_to_pay' => $loanAmortizationData->principal_amount / $loanAmortizationData->repayment_period_approved,
-                    'due_date' => Carbon::now()->addWeeks($i),
-                ]);
-                
-            }
-           
-            return [
-                'status' => 200,
-                'message' => 'Loan Amortization created successfully'                
-            ];
-
-        } catch(\Exception $e) {
-
-            return [
-                'status' => 417,
-                'message' => 'Something went wrong',
-                'error' => 'EXPECTATION FAILED'
-            ];
-
-        }
-
+        $this->loanAmortizationRepository = $loanAmortizationRepository;
     }
 
-    public function deleteAmortizationForLoan($loan)
+    public function createLoanAmortization($loanAmortizationData, $loan_id)
     {
-        try {
+        return $this->loanAmortizationRepository->createLoanAmortization($loanAmortizationData, $loan_id);
+    }
 
-            LoanAmortization::where('loan_id', $loan->id)->forceDelete();
-
-        } catch(\Exception $e) {
-            return [
-                'status' => 417,
-                'message' => 'Something went wrong',
-                'error' => 'EXPECTATION FAILED'
-            ];
-        }
+    public function deleteLoanAmortization($loan_id)
+    {
+        return $this->loanAmortizationRepository->deleteLoanAmortization($loan_id);
+    }
+    
+    public function payLoanAmortizationIfExists($loan_id, $amount_paid)
+    {
+        return $this->loanAmortizationRepository->payLoanAmortizationIfExists($loan_id, $amount_paid);
     }
 
 }

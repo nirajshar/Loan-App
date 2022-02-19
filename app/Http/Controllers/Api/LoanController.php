@@ -4,45 +4,39 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Validator;
-use App\Models\Loan;
-use App\Models\LoanApplication;
-use App\Http\Resources\LoanResource;
-use DB;
-use App\Services\LoanAmortizationService;
+
+use App\Services\LoanService;
 
 class LoanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    protected $loanService;
+
+    public function __construct(LoanService $loanService)
+    {
+        $this->loanService = $loanService;
+    }
+    
     public function index()
     {
-        $loans = Loan::latest()->get();
 
-        if ( $loans->isEmpty() ) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Loans not found',
-                'error' => 'NOT FOUND'
-            ], 404);
+        $response = [];
+
+        try {
+            $response = $this->loanService->getAll();
+        } catch (Exception $e) {
+            $response = [
+                'status' => 500,
+                'message' => 'Something went wrong',
+                'error' => 'INTERNAL SERVER ERROR'
+            ];
         }
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Loans found',
-            'data' => LoanResource::collection($loans)
-        ], 200);
+        return response()->json($response, $response['status']);
+        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    # DEPRECATED
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -106,105 +100,61 @@ class LoanController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $loan = Loan::find($id);
 
-        if ( is_null( $loan ) ) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Loan not found',
-                'error' => 'NOT FOUND'
-            ], 404); 
-        }
-
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Loan found',
-            'data' => new LoanResource($loan)
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-
-        $loan = Loan::find($id);
-
-        if ( is_null( $loan ) ) {
-            return response()->json([
-                'status' => 404,
-                'message' => 'Loan not found',
-                'error' => 'NOT FOUND'
-            ], 404); 
-        }
-
-        $validator = Validator::make($request->all(),[           
-            'amount_approved' => 'required|min:0|max:52',
-            'repayment_period_approved' => 'required|min:0|max:52',            
-            'principal_amount' => 'required|min:0|max:100000',
-            'interest_percentage' => 'required|numeric|min:0.1|max:100.0',
-            'interest_amount' => 'required|min:0|max:100000',
-            'loan_status' => 'required|string|in:ACTIVE,CLOSED,SETTLED'
-        ]);
-
-        if ( $validator->fails() ) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Validation failed',
-                'error' => 'BAD REQUEST',
-                'errors' => $validator->errors()
-            ]);       
-        }
-
+        $response = [];
 
         try {
-
-            DB::beginTransaction();
-
-            $loan->amount_approved = $validator->safe()->amount_approved;
-            $loan->repayment_period_approved = $validator->safe()->repayment_period_approved;
-            $loan->principal_amount = $validator->safe()->principal_amount;
-            $loan->principal_amount = $validator->safe()->interest_percentage;
-            $loan->interest_amount = $validator->safe()->interest_amount;
-            $loan->loan_status = $validator->safe()->loan_status;
-
-            $loan->save();
-
-            LoanAmortizationService::deleteAmortizationForLoan($loan);
-            $loanAmortization = LoanAmortizationService::createLoanAmortization($validator->safe(), $loan->id);
-
-            DB::commit();             
-            
-            return response()->json([
-                'status' => 200,
-                'message' => 'Loan updated successfully', 
-                'data' => new LoanResource($loan)
-            ], 200);
-            
-        } catch(\Exception $e) {
-    
-            DB::rollback();
-
-            return response()->json([
-                'status' => 417,
+            $response = $this->loanService->showOne($id);
+        } catch (Exception $e) {
+            $response = [
+                'status' => 500,
                 'message' => 'Something went wrong',
-                'error' => 'EXPECTATION FAILED'.$e
-            ], 417);
+                'error' => 'INTERNAL SERVER ERROR'
+            ];
         }
+
+        return response()->json($response, $response['status']);
+        
+    }
+
+    public function update(Request $request, $id)
+    {
+        $response = [];
+
+        try {
+            $response = $this->loanService->updateOne($request, $id);
+        } catch (Exception $e) {
+            $response = [
+                'status' => 500,
+                'message' => 'Something went wrong',
+                'error' => 'INTERNAL SERVER ERROR'
+            ];
+        }
+
+        return response()->json($response, $response['status']);
+    }
+
+    # USER
+    public function submitPayment(Request $request)
+    {
+        $user = auth()->user();
+
+        $response = [];
+
+        try {
+            $response = $this->loanService->submitPayment($request, $user);
+        } catch (Exception $e) {
+            $response = [
+                'status' => 500,
+                'message' => 'Something went wrong',
+                'error' => 'INTERNAL SERVER ERROR'
+            ];
+        }
+
+        return response()->json($response, $response['status']);
+
     }
 
     

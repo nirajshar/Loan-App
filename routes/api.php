@@ -21,7 +21,7 @@ Route::group([ 'middleware' => 'api', 'prefix' => 'v1'], function () {
 
     # USER ROUTES
     Route::group(['middleware' => 'auth.role:user'], function() {
-        Route::post('ewi/pay', [LoanAmortizationController::class, 'submitPayment'])->middleware();
+        Route::post('ewi/pay', [LoanController::class, 'submitPayment'])->middleware();
     });
 
     # SHARED ROUTES (ADMIN | USER)
